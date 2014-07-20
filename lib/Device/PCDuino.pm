@@ -23,11 +23,69 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
 # THE POSSIBILITY OF SUCH DAMAGE.
 #
-package Device::PCDunio;
+package Device::PCDuino;
 use v5.14;
 
-
 # ABSTRACT: Control the pcDuino with Perl
+
+use base 'Exporter';
+our @EXPORT_OK = qw{
+    set_input
+    input
+    set_output
+    output
+};
+our @EXPORT = @EXPORT_OK;
+
+use constant MODE_FILE_PATH => '/sys/devices/virtual/misc/gpio/mode/gpio';
+use constant PIN_FILE_PATH  => '/sys/devices/virtual/misc/gpio/pin/gpio';
+
+
+sub set_input
+{
+    my ($pin) = @_;
+    return _set_pin( $pin, 0 );
+}
+
+sub set_output
+{
+    my ($pin) = @_;
+    return _set_pin( $pin, 1 );
+}
+
+sub input
+{
+    my ($pin) = @_;
+    my $file = PIN_FILE_PATH . $pin;
+    open( my $in, '<', $file, ) or die "Can't open '$file': $!\n";
+
+    my $input = '';
+    read( $in, $input, 4 );
+
+    close $in;
+
+    return $input;
+}
+
+sub output
+{
+    my ($pin, $output) = @_;
+    my $file = PIN_FILE_PATH . $pin;
+    open( my $out, '>', $file, ) or die "Can't open '$file': $!\n";
+    print $out "$output";
+    close $out;
+    return 1;
+}
+
+sub _set_pin
+{
+    my ($pin, $type) = @_;
+    my $file = MODE_FILE_PATH . $pin;
+    open( my $out, '>', $file, ) or die "Can't open '$file': $!\n";
+    print $out "$type";
+    close $out;
+    return 1;
+}
 
 
 1;
