@@ -39,6 +39,7 @@ our @EXPORT = @EXPORT_OK;
 
 use constant MODE_FILE_PATH => '/sys/devices/virtual/misc/gpio/mode/gpio';
 use constant PIN_FILE_PATH  => '/sys/devices/virtual/misc/gpio/pin/gpio';
+use constant ADC_PIN_FILE_PATH => '/proc/adc';
 
 
 sub set_input
@@ -77,6 +78,19 @@ sub output
     return 1;
 }
 
+sub input_adc
+{
+    my ($pin) = @_;
+    my $path = ADC_PIN_FILE_PATH . $pin;
+
+    open( my $in, '<', $path ) or die "Can't open '$path': $!\n";
+    my $input = <$in>;
+    close $in;
+
+    my ($val) = $input =~ /\A [^:]* : ([0-9]+) /x;
+    return $val;
+}
+
 sub _set_pin
 {
     my ($pin, $type) = @_;
@@ -101,6 +115,10 @@ TODO
 =head1 DESCRIPTION
 
 TODO
+
+Before using ADC functions, be sure to load the C<adc> kernel module.
+
+  $ modprobe adc
 
 =head1 LICENSE
 
