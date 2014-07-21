@@ -65,6 +65,7 @@ sub input
 
     close $in;
 
+    chomp $input;
     return $input;
 }
 
@@ -91,6 +92,14 @@ sub input_adc
     return $val;
 }
 
+sub output_adc
+{
+    my ($pin, $output) = @_;
+    my $path = ADC_PIN_FILE_PATH . $pin;
+
+    return 1;
+}
+
 sub _set_pin
 {
     my ($pin, $type) = @_;
@@ -103,6 +112,9 @@ sub _set_pin
 
 
 1;
+__END__
+
+
 
 =head1 NAME
 
@@ -116,9 +128,10 @@ TODO
 
 TODO
 
-Before using ADC functions, be sure to load the C<adc> kernel module.
+Before using, be sure to load the kernel modules.
 
-  $ modprobe adc
+  # modprobe gpio
+  # modprobe adc
 
 =head1 LICENSE
 
