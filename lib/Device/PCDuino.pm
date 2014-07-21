@@ -123,16 +123,70 @@ __END__
 
 =head1 SYNOPSIS
 
-TODO
+  use Device::PCDuino;
+  set_input( 0 );
+  set_output( 1 );
+
+  # Mirror the input from pin 0 to pin 1 );
+  my $input = input( 0 );
+  output( 1, $input );
+
+  # Show value of ADC pin 0
+  say input_adc( 0 )
 
 =head1 DESCRIPTION
 
-TODO
+Hardware interface for the pcDuino.  Gives access to GPIO and ADC pins.
+
+All functions documented below are exported by default
 
 Before using, be sure to load the kernel modules.
 
   # modprobe gpio
   # modprobe adc
+  # modprobe pwm
+
+=head1 FUNCTIONS
+
+=head2 set_input( PIN_NUMBER )
+
+Set the given pin as an input pin.
+
+=head2 set_output( PIN_NUMBER )
+
+Set the given pin as an output pin.
+
+=head2 input( PIN_NUMBER )
+
+Get the boolean value of the given pin.
+
+=head2 output( PIN_NUMBER, VALUE )
+
+Set the boolean value of the given pin.
+
+=head2 input_adc( ADC_PIN_NUMBER )
+
+Get the value of the given ADC pin.
+
+=head1 TODO
+
+=over 4
+
+=item * PWM
+
+=item * I2C
+
+=item * SPI
+
+=item * Serial
+
+=back
+
+=head1 SEE ALSO
+
+pcDuino Homepage: L<http://www.pcduino.com>
+
+Author Homepage: L<https://www.wumpus-cave.net>
 
 =head1 LICENSE
 
