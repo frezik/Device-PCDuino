@@ -21,14 +21,14 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 # POSSIBILITY OF SUCH DAMAGE.
-use Test::More tests => 6;
+use Test::More tests => 7;
 use v5.14;
 
 use_ok( 'Device::PCDuino' );
 
 SKIP: {
     my $check_file = Device::PCDuino::MODE_FILE_PATH() . '1';
-    skip( "Not on a pcDuino", 5 )
+    skip( "Not on a pcDuino", 6 )
         if ! -e $check_file;
 
     ok( set_input( 1 ), "Set pin 1 to input" );
@@ -36,4 +36,5 @@ SKIP: {
     ok( set_output( 2 ), "Set pin 2 to output" );
     ok( output( 2, 0 ), "Output on pin 2" );
     ok( defined input_adc( 1 ), "Get input of ADC pin 1" );
+    ok( output_pwm( 2, 255 ), "Set PWM pin 2 to 255" );
 }

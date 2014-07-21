@@ -34,6 +34,8 @@ our @EXPORT_OK = qw{
     input
     set_output
     output
+    input_adc
+    output_pwm
 };
 our @EXPORT = @EXPORT_OK;
 
@@ -92,10 +94,9 @@ sub input_adc
     return $val;
 }
 
-sub output_adc
+sub output_pwm
 {
     my ($pin, $output) = @_;
-    my $path = ADC_PIN_FILE_PATH . $pin;
 
     return 1;
 }
